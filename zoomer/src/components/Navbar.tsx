@@ -1,16 +1,17 @@
 import React from "react";
+import Logo from "./Logo";
 import "./Navbar.css";
+import { SearchBar } from "./Searchbar";
+import { Profile } from "./profile";
+import { CartButton } from "./CartButton";
 export function Navbar() {
   return (
     <>
       <div className="nav-wrapper">
-        <Logo />;
-        {/* <Searchbar />
-        <ProfileButton />
-        <CartButton /> */}
-        <div>div2</div>
-        <div>div3</div>
-        <div>div4</div>
+        <Logo />
+        <SearchBar />
+        <Profile />
+        <CartButton itemCount={undefined} />
       </div>
     </>
   );

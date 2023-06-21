@@ -4,6 +4,7 @@ import { About } from "./pages/About";
 import { Navbar } from "./components/Navbar";
 import { Home } from "./pages/Home";
 import { Store } from "./pages/Store";
+import { SearchBar } from "./components/Searchbar";
 
 function App() {
   return (

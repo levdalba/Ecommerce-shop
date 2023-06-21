@@ -1,7 +1,11 @@
-import React from "react";
+import myImage from "../assets/zoomer.png";
 
 function Logo() {
-  return <div>Logo</div>;
+  return (
+    <>
+      <img className="logo" src={myImage} alt="My Image" />{" "}
+    </>
+  );
 }
 
 export default Logo;

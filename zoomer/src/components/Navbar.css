@@ -1,4 +1,25 @@
 .nav-wrapper {
 	display:flex;
-	justify-content: space-between;
+	justify-content: space-around;
+}
+
+.logo{
+	overflow:auto;
+	height:1%;
+}
+
+.profile{
+	display: flex;
+	align-items: center;
+	
+}
+
+.search{
+	display: flex;
+	align-items: center;
+}
+
+.cart{
+	display: flex;
+	align-items: center;
 }
