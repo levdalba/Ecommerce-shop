@@ -2,7 +2,7 @@ import React from "react";
 import { IconButton, Badge, Typography } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
 
-export const CartButton = ({ itemCount }) => {
+export const CartButton = ({ itemCount }: { itemCount: number }) => {
   return (
     <div className="cart">
       <IconButton

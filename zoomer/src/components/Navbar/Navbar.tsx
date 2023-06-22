@@ -2,7 +2,7 @@ import React from "react";
 import Logo from "./Logo";
 import "./Navbar.css";
 import { SearchBar } from "./Searchbar";
-import { Profile } from "./profile";
+import { Profile } from "./Profile";
 import { CartButton } from "./CartButton";
 export function Navbar() {
   return (
@@ -11,7 +11,7 @@ export function Navbar() {
         <Logo />
         <SearchBar />
         <Profile />
-        <CartButton itemCount={undefined} />
+        <CartButton itemCount={3} />
       </div>
     </>
   );

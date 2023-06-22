@@ -11,15 +11,15 @@ export const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: any) => {
     setSearchQuery(event.target.value);
   };
 
-  const handleCategoryChange = (event) => {
+  const handleCategoryChange = (event: any) => {
     setSelectedCategory(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
     // Perform search or filtering based on searchQuery and selectedCategory
     console.log("Search query:", searchQuery);

@@ -5,7 +5,7 @@ import { AccountCircle } from "@mui/icons-material";
 export const Profile = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleMenuOpen = (event) => {
+  const handleMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
 

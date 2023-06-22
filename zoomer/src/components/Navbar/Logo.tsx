@@ -1,4 +1,4 @@
-import myImage from "../assets/zoomer.png";
+import myImage from "../../assets/zoomer.png";
 
 function Logo() {
   return (
