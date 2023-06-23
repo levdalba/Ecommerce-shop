@@ -1,11 +1,19 @@
 import React from "react";
-import { IconButton, Menu, MenuItem, Avatar, Typography } from "@mui/material";
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  Avatar,
+  Typography,
+  Toolbar,
+  AppBar,
+} from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 
 export const Profile = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleMenuOpen = (event: any) => {
+  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -45,3 +53,27 @@ export const Profile = () => {
     </div>
   );
 };
+
+const AdminPanel = () => {
+  return (
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Admin Panel
+          </Typography>
+          <Profile />
+        </Toolbar>
+      </AppBar>
+      <Typography variant="h4" sx={{ marginTop: "2rem" }}>
+        Welcome to the Admin Panel
+      </Typography>
+      <Typography variant="body1" sx={{ marginTop: "1rem" }}>
+        Here you can manage the settings, users, and content of your
+        application.
+      </Typography>
+    </div>
+  );
+};
+
+export default AdminPanel;

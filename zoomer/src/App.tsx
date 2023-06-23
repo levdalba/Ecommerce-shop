@@ -1,9 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Container } from "@mui/material";
 import { About } from "./pages/About";
 import { Navbar } from "./components/Navbar/Navbar";
-import { Home } from "./pages/Home/Home";
+import { Home } from "./pages/Home";
 import { Store } from "./Store";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -20,11 +20,11 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/store" element={<Store />} />
-            <Route path="/about" element={<About />} />
-          </Routes>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/store" component={Store} />
+          <Route path="/about" component={About} />
+        </Switch>
       </Router>
     </ThemeProvider>
   );
