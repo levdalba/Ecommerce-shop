@@ -21,7 +21,6 @@ const theme = createTheme();
 const useStyles = makeStyles(() => ({
   card: {
     display: "flex",
-    maxWidth: 345,
     justifyContent: "center",
     position: "relative",
     minHeight: "100%",
@@ -44,6 +43,9 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "column",
+    marginTop: 24,
+    marginBottom: 24,
   },
   modalContent: {
     background: theme.palette.background.paper,
@@ -55,6 +57,11 @@ const useStyles = makeStyles(() => ({
   },
   closeButton: {
     marginLeft: "auto",
+  },
+  productsContainer: {
+    margin: "0 auto",
+    maxWidth: 960,
+    padding: "0 16px",
   },
 }));
 
@@ -72,7 +79,6 @@ interface Product {
 export const Home = () => {
   const classes = useStyles();
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -91,7 +97,7 @@ export const Home = () => {
     try {
       const response = await axios.post("http://localhost:8080/products", {
         keyword: "laptop",
-        page_size: 6,
+        page_size: 12,
         page_number: 55,
       });
       const data = response.data;
@@ -113,14 +119,6 @@ export const Home = () => {
     }
   };
 
-  const handleProductClick = (product: Product) => {
-    setSelectedProduct(product);
-  };
-
-  const closeProductModal = () => {
-    setSelectedProduct(null);
-  };
-
   const truncateTitle = (title: string) => {
     const words = title.split(" ");
     if (words.length > 4) {
@@ -130,115 +128,61 @@ export const Home = () => {
   };
 
   const calculateCardHeight = () => {
-    const cardElements = cardRef.current?.querySelectorAll(`.${classes.card}`);
-    if (cardElements) {
-      let minHeight = Infinity;
-      cardElements.forEach((cardElement) => {
-        const height = cardElement.clientHeight;
-        if (height < minHeight) {
-          minHeight = height;
-        }
-      });
-      cardElements.forEach((cardElement) => {
-        const element = cardElement as HTMLElement;
-        element.style.minHeight = `${minHeight}px`;
-      });
+    if (cardRef.current) {
+      const cardWidth = cardRef.current.offsetWidth;
+      const cardHeight = Math.floor(cardWidth * 1.4);
+      cardRef.current.style.height = `${cardHeight}px`;
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
+      <div>
         <CustomCarousel />
-        <Switch>
-          <Route exact path="/">
-            <div>
-              <Typography variant="h4" align="center" gutterBottom>
-                Product List
-              </Typography>
-
-              <Grid
-                container
-                spacing={3}
-                justifyContent="center"
-                alignItems="center"
-              >
-                {products.length > 0 ? (
-                  products.map((product) => (
-                    <Grid item xs={12} sm={6} md={4} key={product.id}>
-                      <Card className={classes.card} ref={cardRef}>
-                        <CardActionArea
-                          component={Link}
-                          to={`/products/${product.id}`}
-                        >
-                          <div>
-                            <img
-                              src={product.images[0]}
-                              alt={`Product ${product.id} - Image 0`}
-                            />
-                            <CardContent>
-                              <Typography variant="h6" align="center">
-                                {product.title}
-                              </Typography>
-                            </CardContent>
-                          </div>
-                        </CardActionArea>
-                        {selectedProduct === product && (
-                          <CardContent>
-                            <Typography variant="body2">
-                              {product.description}
-                            </Typography>
-                          </CardContent>
-                        )}
-                      </Card>
-                    </Grid>
-                  ))
-                ) : (
-                  <Typography variant="body1" align="center">
-                    No products available.
-                  </Typography>
-                )}
-              </Grid>
-
-              <Modal
-                open={selectedProduct !== null}
-                onClose={closeProductModal}
-                className={classes.modalContainer}
-              >
-                <div className={classes.modalContent}>
-                  {selectedProduct && (
-                    <>
-                      <Typography variant="h5" gutterBottom>
-                        {selectedProduct.title}
-                      </Typography>
-                      <Typography variant="body1" gutterBottom>
-                        {selectedProduct.description}
-                      </Typography>
-                      {selectedProduct.images.map((image, index) => (
-                        <img
-                          key={index}
-                          src={image}
-                          alt={`Product ${selectedProduct.id} - Image ${index}`}
-                          style={{ maxWidth: "100%", marginBottom: 10 }}
-                        />
-                      ))}
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={closeProductModal}
-                        className={classes.closeButton}
-                      >
-                        Close
-                      </Button>
-                    </>
-                  )}
-                </div>
-              </Modal>
-            </div>
-          </Route>
-          <Route path="/products/:productId" component={ProductPage} />
-        </Switch>
-      </Router>
+        <div className={classes.modalContainer}>
+          <Typography variant="h5" gutterBottom>
+            Featured Products
+          </Typography>
+          <div className={classes.productsContainer}>
+            <Grid container spacing={2} justifyContent="center">
+              {products.map((product) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                  <Card className={classes.card} ref={cardRef}>
+                    <CardActionArea
+                      component={Link}
+                      to={`/products/${product.id}`}
+                    >
+                      <Carousel>
+                        {product.images.map((image, index) => (
+                          <img
+                            src={image}
+                            alt={`Product ${index}`}
+                            key={index}
+                            style={{ objectFit: "cover", width: "100%" }}
+                          />
+                        ))}
+                      </Carousel>
+                      <CardContent>
+                        <Typography variant="h6">
+                          {truncateTitle(product.title)}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          {product.brand}
+                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+                          ${product.price}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+        </div>
+      </div>
     </ThemeProvider>
   );
 };
+
+export default Home;
