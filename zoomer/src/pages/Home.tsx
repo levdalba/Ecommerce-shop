@@ -6,57 +6,25 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  Modal,
+  CardActions,
   Button,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
-import { CustomCarousel } from "../components/Navbar/Carousel";
-import { ProductPage } from "../components/ProductCard/Productpage";
 import { makeStyles } from "@mui/styles";
+import { AddShoppingCart } from "@mui/icons-material";
+
+import { CustomCarousel } from "../components/Navbar/Carousel";
 
 const theme = createTheme();
 
 const useStyles = makeStyles(() => ({
   card: {
     display: "flex",
-    justifyContent: "center",
-    position: "relative",
-    minHeight: "100%",
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    background: "rgba(0, 0, 0, 0.6)",
-    color: "white",
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  modalContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     flexDirection: "column",
-    marginTop: 24,
-    marginBottom: 24,
-  },
-  modalContent: {
-    background: theme.palette.background.paper,
-    padding: theme.spacing(2),
-    maxWidth: 600,
-    width: "100%",
-    outline: "none",
-    borderRadius: theme.shape.borderRadius,
-  },
-  closeButton: {
-    marginLeft: "auto",
+    justifyContent: "space-between",
+    minHeight: "100%",
   },
   productsContainer: {
     margin: "0 auto",
@@ -139,46 +107,53 @@ export const Home = () => {
     <ThemeProvider theme={theme}>
       <div>
         <CustomCarousel />
-        <div className={classes.modalContainer}>
-          <Typography variant="h5" gutterBottom>
-            Featured Products
-          </Typography>
-          <div className={classes.productsContainer}>
-            <Grid container spacing={2} justifyContent="center">
-              {products.map((product) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
-                  <Card className={classes.card} ref={cardRef}>
-                    <CardActionArea
+        <div className={classes.productsContainer}>
+          <Grid container spacing={2} justifyContent="center">
+            {products.map((product) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+                <Card className={classes.card} ref={cardRef}>
+                  <CardActionArea
+                    component={Link}
+                    to={`/products/${product.id}`}
+                  >
+                    <Carousel>
+                      {product.images.map((image, index) => (
+                        <img
+                          src={image}
+                          alt={`Product ${index}`}
+                          key={index}
+                          style={{ objectFit: "cover", width: "100%" }}
+                        />
+                      ))}
+                    </Carousel>
+                    <CardContent>
+                      <Typography variant="h6">
+                        {truncateTitle(product.title)}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        {product.brand}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        ${product.price}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AddShoppingCart />}
                       component={Link}
-                      to={`/products/${product.id}`}
+                      to={`/cart/${product.id}`}
+                      fullWidth
                     >
-                      <Carousel>
-                        {product.images.map((image, index) => (
-                          <img
-                            src={image}
-                            alt={`Product ${index}`}
-                            key={index}
-                            style={{ objectFit: "cover", width: "100%" }}
-                          />
-                        ))}
-                      </Carousel>
-                      <CardContent>
-                        <Typography variant="h6">
-                          {truncateTitle(product.title)}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          {product.brand}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textSecondary">
-                          ${product.price}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </div>
+                      Add to Cart
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </div>
       </div>
     </ThemeProvider>
