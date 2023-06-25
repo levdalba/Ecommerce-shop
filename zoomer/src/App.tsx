@@ -6,6 +6,7 @@ import { Navbar } from "./components/Navbar/Navbar";
 import { Home } from "./pages/Home";
 import { Store } from "./Store";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CartPage from "./components/Cart/Cartpage";
 
 const theme = createTheme({
   palette: {
@@ -24,6 +25,8 @@ export default function App() {
           <Route path="/" exact component={Home} />
           <Route path="/store" component={Store} />
           <Route path="/about" component={About} />
+          <Route path="/cart" component={CartPage} /> // Add the route for
+          CartPage
         </Switch>
       </Router>
     </ThemeProvider>
