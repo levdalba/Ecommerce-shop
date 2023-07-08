@@ -16,7 +16,7 @@ export const CartContext = createContext<CartContextProps>({
   addToCart: () => {},
 });
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -25,8 +25,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     setCartItems((prevItems) => [...prevItems, product]);
   };
 
+  const cartContextValue: CartContextProps = {
+    cartItems,
+    addToCart,
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={cartContextValue}>
       {children}
     </CartContext.Provider>
   );
