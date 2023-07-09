@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Typography, Theme } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { Typography, Button, IconButton } from "@mui/material";
+import { styled } from "@mui/system";
+import { AddShoppingCart } from "@mui/icons-material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Product {
   id: number;
@@ -15,42 +18,47 @@ interface Product {
   amount: number;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: theme.spacing(2),
-  },
-  image: {
-    width: "300px",
-    marginBottom: theme.spacing(2),
-  },
-  title: {
-    marginBottom: theme.spacing(1),
-    fontWeight: "bold",
-  },
-  description: {
-    marginBottom: theme.spacing(1),
-  },
-  brand: {
-    marginBottom: theme.spacing(1),
-  },
-  category: {
-    marginBottom: theme.spacing(1),
-  },
-  price: {
-    marginBottom: theme.spacing(1),
-  },
-  amount: {
-    marginBottom: theme.spacing(1),
-  },
-}));
+const Container = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  marginTop: "16px",
+});
+
+const ProductInfo = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  marginBottom: "16px",
+});
+
+const Image = styled("img")({
+  width: "300px",
+  marginRight: "16px",
+});
+
+const Title = styled(Typography)({
+  marginBottom: "8px",
+  fontWeight: "bold",
+});
+
+const Price = styled(Typography)({
+  fontWeight: "bold",
+});
+
+const ButtonContainer = styled("div")({
+  marginBottom: "16px",
+  display: "flex",
+  alignItems: "center",
+});
+
+const Description = styled(Typography)({
+  marginBottom: "16px",
+});
 
 const ProductPage = () => {
   const { productId } = useParams<{ productId: string }>();
   const [product, setProduct] = useState<Product | null>(null);
-  const classes = useStyles();
+  const [showDescription, setShowDescription] = useState(false);
 
   useEffect(() => {
     fetchProductDetails();
@@ -72,28 +80,47 @@ const ProductPage = () => {
     return <Typography>Loading...</Typography>;
   }
 
+  const handleToggleDescription = () => {
+    setShowDescription(!showDescription);
+  };
+
+  const handleAddToCart = () => {
+    toast.success("Product added to cart!"); // Display success toast
+  };
+
   return (
-    <div className={classes.container}>
-      <img src={product.images[0]} alt="" className={classes.image} />
-      <Typography variant="h5" className={classes.title} gutterBottom>
-        {product.title}
-      </Typography>
-      <Typography variant="body1" className={classes.description} gutterBottom>
-        {product.description}
-      </Typography>
-      <Typography variant="subtitle1" className={classes.brand} gutterBottom>
-        Brand: {product.brand}
-      </Typography>
-      <Typography variant="subtitle1" className={classes.category} gutterBottom>
-        Category: {product.category}
-      </Typography>
-      <Typography variant="h6" className={classes.price} gutterBottom>
-        Price: ${product.price}
-      </Typography>
-      <Typography variant="h6" className={classes.amount} gutterBottom>
-        Amount: {product.amount}
-      </Typography>
-    </div>
+    <Container>
+      <ProductInfo>
+        <Image src={product.images[0]} alt="" />
+        <div>
+          <Title variant="h5" gutterBottom>
+            {product.title}
+          </Title>
+          <Price variant="h6" gutterBottom>
+            ${product.price}
+          </Price>
+          <Button
+            variant="contained"
+            startIcon={<AddShoppingCart />}
+            onClick={handleAddToCart}
+          >
+            Add to Cart
+          </Button>
+        </div>
+        <IconButton aria-label="Add to Cart"></IconButton>
+      </ProductInfo>
+      <ButtonContainer>
+        <Button variant="contained" onClick={handleToggleDescription}>
+          {showDescription ? "Hide Description" : "Show Description"}
+        </Button>
+      </ButtonContainer>
+      {showDescription && (
+        <Description variant="body1" gutterBottom>
+          {product.description}
+        </Description>
+      )}
+      <ToastContainer />
+    </Container>
   );
 };
 
