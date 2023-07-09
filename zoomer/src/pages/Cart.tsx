@@ -4,9 +4,11 @@ import CartPage from "../components/Cart/Cartpage";
 
 const Cart = () => {
   return (
-    <Switch>
-      <Route exact path="/cart" component={CartPage} />
-    </Switch>
+    <>
+      <Switch>
+        <Route exact path="/cart" component={CartPage} />
+      </Switch>
+    </>
   );
 };
 

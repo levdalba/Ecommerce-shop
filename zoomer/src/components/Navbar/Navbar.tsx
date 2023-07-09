@@ -11,7 +11,7 @@ export function Navbar() {
         <Logo />
         <SearchBar />
         <Profile />
-        <CartButton itemCount={3} />
+        <CartButton itemCount={0} />
       </div>
     </>
   );

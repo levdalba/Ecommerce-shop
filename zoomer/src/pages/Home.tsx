@@ -144,7 +144,7 @@ export const Home = () => {
                       color="primary"
                       startIcon={<AddShoppingCart />}
                       component={Link}
-                      to={`/cart/${product.id}`}
+                      to={`/products/${product.id}`}
                       fullWidth
                     >
                       Add to Cart

@@ -65,7 +65,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             color="primary"
             startIcon={<AddShoppingCart />}
             component={Link}
-            to={`/cart/${id}`}
+            to={`/`}
             fullWidth
           >
             Add to Cart
