@@ -16,9 +16,7 @@ import Carousel from "react-material-ui-carousel";
 import { makeStyles } from "@mui/styles";
 import { AddShoppingCart } from "@mui/icons-material";
 import { CustomCarousel } from "../components/Navbar/Carousel";
-
 const theme = createTheme();
-
 const useStyles = makeStyles(() => ({
   card: {
     display: "flex",
@@ -45,6 +43,7 @@ interface Product {
 }
 
 export const Home = () => {
+  const [cartItems, setCartItems] = useState<Product[]>([]);
   const classes = useStyles();
   const [products, setProducts] = useState<Product[]>([]);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -61,9 +60,10 @@ export const Home = () => {
     };
   }, [products]);
 
-  const handleAddToCart = () => {
-    toast.success("Added to cart");
-  }
+  const handleAddToCart = (product: Product) => {
+  setCartItems([...cartItems, product]);
+  toast.success("Product added to cart!");
+};
   
 
   const fetchProducts = async () => {
@@ -149,7 +149,7 @@ export const Home = () => {
                       color="primary"
                       startIcon={<AddShoppingCart />}
                       component={Link}
-                      onClick={() => handleAddToCart()} 
+                      onClick={() => handleAddToCart(product)} 
                       to={`/`}
                       fullWidth
                     >
