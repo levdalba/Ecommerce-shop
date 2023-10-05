@@ -8,7 +8,7 @@ import { Store } from "./Store";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CartPage from "./components/Cart/Cartpage";
 import ProductPage from "./components/ProductCard/Productpage";
-
+import { CartProvider } from "./components/Cart/Cartprovider";
 const theme = createTheme({
   palette: {
     background: {
@@ -19,17 +19,20 @@ const theme = createTheme({
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/store" component={Store} />
-          <Route path="/about" component={About} />
-          <Route path="/cart" component={CartPage} />
-          <Route path="/products/:productId" component={ProductPage} />
-        </Switch>
-      </Router>
-    </ThemeProvider>
+    <CartProvider>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Navbar />
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/store" component={Store} />
+              <Route path="/about" component={About} />
+              <Route path="/cart" component={CartPage} />
+              <Route path="/products/:productId" component={ProductPage} />
+            </Switch>
+          </Router>
+        </ThemeProvider>
+      </CartProvider>
+
   );
 }

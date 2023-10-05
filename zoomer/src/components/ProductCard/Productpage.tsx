@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import React, { useContext } from "react";
 import { Typography, Button, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import { AddShoppingCart } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CartContext, CartItem } from "../Cart/Cartprovider";
 
 interface Product {
   id: number;
@@ -55,38 +54,26 @@ const Description = styled(Typography)({
   marginBottom: "16px",
 });
 
-const ProductPage = () => {
-  const { productId } = useParams<{ productId: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
+
+
+const ProductPage = ({ product }: { product: Product }) => {
+  const { addToCart } = useContext(CartContext);
   const [showDescription, setShowDescription] = useState(false);
-
-  useEffect(() => {
-    fetchProductDetails();
-  }, []);
-
-  const fetchProductDetails = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/product/${productId}`
-      );
-      const data = response.data;
-      setProduct(data);
-    } catch (error) {
-      console.error("Error fetching product details:", error);
-    }
-  };
-
-  if (!product) {
-    return <Typography>Loading...</Typography>;
-  }
 
   const handleToggleDescription = () => {
     setShowDescription(!showDescription);
   };
 
   const handleAddToCart = () => {
-    toast.success("Product added to cart!"); 
+  const cartItem: CartItem = {
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    quantity: 1,
   };
+  addToCart(cartItem);
+  toast.success("Product added to cart!");
+};
 
   return (
     <Container>
@@ -125,3 +112,7 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
+function useState(arg0: boolean): [any, any] {
+  throw new Error("Function not implemented.");
+}

@@ -4,34 +4,28 @@ export interface CartItem {
   id: number;
   title: string;
   price: number;
+  quantity: number;
 }
 
-interface CartContextProps {
+interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: CartItem) => void;
+  addToCart: (item: CartItem) => void;
 }
 
-export const CartContext = createContext<CartContextProps>({
+export const CartContext = createContext<CartContextType>({
   cartItems: [],
-  addToCart: () => {},
+  addToCart: (item: CartItem) => {},
 });
 
-export const CartProvider: React.FC<React.PropsWithChildren<{}>> = ({
-  children,
-}) => {
+export const CartProvider = ({ children }: any) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const addToCart = (product: CartItem) => {
-    setCartItems((prevItems) => [...prevItems, product]);
-  };
-
-  const cartContextValue: CartContextProps = {
-    cartItems,
-    addToCart,
+  const addToCart = (item: CartItem) => {
+    setCartItems([...cartItems, item]);
   };
 
   return (
-    <CartContext.Provider value={cartContextValue}>
+    <CartContext.Provider value={{ cartItems, addToCart }}>
       {children}
     </CartContext.Provider>
   );
