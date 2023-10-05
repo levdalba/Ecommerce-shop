@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 import {
   Typography,
   Grid,
@@ -14,7 +15,6 @@ import { Link } from "react-router-dom";
 import Carousel from "react-material-ui-carousel";
 import { makeStyles } from "@mui/styles";
 import { AddShoppingCart } from "@mui/icons-material";
-
 import { CustomCarousel } from "../components/Navbar/Carousel";
 
 const theme = createTheme();
@@ -60,6 +60,11 @@ export const Home = () => {
       window.removeEventListener("resize", calculateCardHeight);
     };
   }, [products]);
+
+  const handleAddToCart = () => {
+    toast.success("Added to cart");
+  }
+  
 
   const fetchProducts = async () => {
     try {
@@ -144,7 +149,8 @@ export const Home = () => {
                       color="primary"
                       startIcon={<AddShoppingCart />}
                       component={Link}
-                      to={`/products/${product.id}`}
+                      onClick={() => handleAddToCart()} 
+                      to={`/`}
                       fullWidth
                     >
                       Add to Cart
@@ -161,3 +167,4 @@ export const Home = () => {
 };
 
 export default Home;
+

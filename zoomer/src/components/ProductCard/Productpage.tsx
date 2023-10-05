@@ -85,7 +85,7 @@ const ProductPage = () => {
   };
 
   const handleAddToCart = () => {
-    toast.success("Product added to cart!"); // Display success toast
+    toast.success("Product added to cart!"); 
   };
 
   return (
