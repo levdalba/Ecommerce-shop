@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { Typography, Grid } from "@mui/material";
-import { CartContext, CartItem } from "../Cart/Cartprovider";
+import React, { useContext } from 'react';
+import { Typography, Grid } from '@mui/material';
+import { CartContext, CartItem } from '../Cart/Cartprovider';
 
 const CartPage = () => {
   const { cartItems } = useContext(CartContext);

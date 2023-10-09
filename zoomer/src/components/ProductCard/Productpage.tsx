@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Typography, Button, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import { AddShoppingCart } from "@mui/icons-material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CartContext, CartItem } from "../Cart/Cartprovider";
+import { makeStyles } from "@mui/styles";
 
 interface Product {
   id: number;
@@ -16,6 +17,13 @@ interface Product {
   price: number;
   amount: number;
 }
+
+const useStyles = makeStyles({
+  image: {
+    width: "300px",
+    marginRight: "16px",
+  },
+});
 
 const Container = styled("div")({
   display: "flex",
@@ -54,31 +62,41 @@ const Description = styled(Typography)({
   marginBottom: "16px",
 });
 
-
-
 const ProductPage = ({ product }: { product: Product }) => {
   const { addToCart } = useContext(CartContext);
   const [showDescription, setShowDescription] = useState(false);
+  const classes = useStyles();
 
   const handleToggleDescription = () => {
     setShowDescription(!showDescription);
   };
 
   const handleAddToCart = () => {
-  const cartItem: CartItem = {
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    quantity: 1,
+    const cartItem: CartItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      quantity: 1,
+    };
+    addToCart(cartItem);
+    toast.success("Product added to cart!");
   };
-  addToCart(cartItem);
-  toast.success("Product added to cart!");
-};
 
   return (
     <Container>
       <ProductInfo>
-        <Image src={product.images[0]} alt="" />
+
+        {product.images && product.images.length > 0 && (
+          <Image
+
+            src={product.images[0]}
+            alt={product.title}
+            className={classes.image}
+          />
+
+
+
+        )}
         <div>
           <Title variant="h5" gutterBottom>
             {product.title}
@@ -86,6 +104,7 @@ const ProductPage = ({ product }: { product: Product }) => {
           <Price variant="h6" gutterBottom>
             ${product.price}
           </Price>
+          
           <Button
             variant="contained"
             startIcon={<AddShoppingCart />}
@@ -112,7 +131,3 @@ const ProductPage = ({ product }: { product: Product }) => {
 };
 
 export default ProductPage;
-
-function useState(arg0: boolean): [any, any] {
-  throw new Error("Function not implemented.");
-}
