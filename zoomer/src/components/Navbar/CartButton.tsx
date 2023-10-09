@@ -69,7 +69,7 @@ export const CartButton = ({ itemCount }: { itemCount: number }) => {
           </List>
           <Divider />
           <List>
-            <ListItem button onClick={handleGoToCart}>
+            <ListItem onClick={handleGoToCart}>
               <ListItemText primary="Go to Cart" />
             </ListItem>
           </List>

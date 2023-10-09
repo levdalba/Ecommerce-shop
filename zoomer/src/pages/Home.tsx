@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Typography,
   Grid,
@@ -9,25 +9,27 @@ import {
   CardContent,
   CardActions,
   Button,
-} from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
-import Carousel from "react-material-ui-carousel";
-import { makeStyles } from "@mui/styles";
-import { AddShoppingCart } from "@mui/icons-material";
-import { CustomCarousel } from "../components/Navbar/Carousel";
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
+import Carousel from 'react-material-ui-carousel';
+import { makeStyles } from '@mui/styles';
+import { AddShoppingCart } from '@mui/icons-material';
+import { CustomCarousel } from '../components/Navbar/Carousel';
+
 const theme = createTheme();
+
 const useStyles = makeStyles(() => ({
   card: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    minHeight: "100%",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    minHeight: '100%',
   },
   productsContainer: {
-    margin: "0 auto",
+    margin: '0 auto',
     maxWidth: 960,
-    padding: "0 16px",
+    padding: '0 16px',
   },
 }));
 
@@ -35,7 +37,7 @@ interface Product {
   id: number;
   title: string;
   description: string;
-  images: string[];
+  images: string[]; // Make sure 'images' property is defined
   brand: string;
   category: string;
   price: number;
@@ -54,22 +56,21 @@ export const Home = () => {
 
   useEffect(() => {
     calculateCardHeight();
-    window.addEventListener("resize", calculateCardHeight);
+    window.addEventListener('resize', calculateCardHeight);
     return () => {
-      window.removeEventListener("resize", calculateCardHeight);
+      window.removeEventListener('resize', calculateCardHeight);
     };
   }, [products]);
 
   const handleAddToCart = (product: Product) => {
-  setCartItems([...cartItems, product]);
-  toast.success("Product added to cart!");
-};
-  
+    setCartItems([...cartItems, product]);
+    toast.success('Product added to cart!');
+  };
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/products", {
-        keyword: "laptop",
+      const response = await axios.post('http://localhost:8080/products', {
+        keyword: 'laptop',
         page_size: 12,
         page_number: 55,
       });
@@ -77,25 +78,25 @@ export const Home = () => {
 
       if (Array.isArray(data)) {
         setProducts(data);
-      } else if (data && typeof data === "object") {
+      } else if (data && typeof data === 'object') {
         const productsArray = data.products;
         if (Array.isArray(productsArray)) {
           setProducts(productsArray);
         } else {
-          console.error("Invalid response format: Products array not found");
+          console.error('Invalid response format: Products array not found');
         }
       } else {
-        console.error("Invalid response format: Expected an array or object");
+        console.error('Invalid response format: Expected an array or object');
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error('Error fetching products:', error);
     }
   };
 
   const truncateTitle = (title: string) => {
-    const words = title.split(" ");
+    const words = title.split(' ');
     if (words.length > 4) {
-      return words.slice(0, 4).join(" ") + "...";
+      return words.slice(0, 4).join(' ') + '...';
     }
     return title;
   };
@@ -127,7 +128,7 @@ export const Home = () => {
                           src={image}
                           alt={`Product ${index}`}
                           key={index}
-                          style={{ objectFit: "cover", width: "100%" }}
+                          style={{ objectFit: 'cover', width: '100%' }}
                         />
                       ))}
                     </Carousel>
@@ -149,7 +150,7 @@ export const Home = () => {
                       color="primary"
                       startIcon={<AddShoppingCart />}
                       component={Link}
-                      onClick={() => handleAddToCart(product)} 
+                      onClick={() => handleAddToCart(product)}
                       to={`/`}
                       fullWidth
                     >
@@ -167,4 +168,3 @@ export const Home = () => {
 };
 
 export default Home;
-
