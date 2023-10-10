@@ -12,22 +12,13 @@ import {
 import { ShoppingCart } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 import { CartContext, CartItem } from '../Cart/Cartprovider';
+import CartPage from '../Cart/Cartpage';
 
 export const CartButton = ({ itemCount }: { itemCount: number }) => {
   const history = useHistory();
   const { cartItems } = useContext(CartContext);
-  const [isCartOpen, setIsCartOpen] = React.useState(false);
 
-  const handleClick = () => {
-    setIsCartOpen(true);
-  };
-
-  const handleCloseCart = () => {
-    setIsCartOpen(false);
-  };
-
-  const handleGoToCart = () => {
-    setIsCartOpen(false);
+  const CartPage = () => {
     history.push('/cart');
   };
 
@@ -40,7 +31,7 @@ export const CartButton = ({ itemCount }: { itemCount: number }) => {
           aria-controls="shopping-cart-menu"
           aria-haspopup="true"
           color="inherit"
-          onClick={handleClick}
+          onClick={CartPage}
         >
           <Badge badgeContent={itemCount} color="error">
             <ShoppingCart />
@@ -55,26 +46,6 @@ export const CartButton = ({ itemCount }: { itemCount: number }) => {
           0 ₾
         </Typography>
       </div>
-      <Drawer anchor="right" open={isCartOpen} onClose={handleCloseCart}>
-        <div role="presentation">
-          <List>
-            {cartItems.map((item: CartItem) => (
-              <ListItem key={item.id}>
-                <ListItemText
-                  primary={item.title}
-                  secondary={`Price: $${item.price}`}
-                />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            <ListItem onClick={handleGoToCart}>
-              <ListItemText primary="Go to Cart" />
-            </ListItem>
-          </List>
-        </div>
-      </Drawer>
     </>
   );
 };
