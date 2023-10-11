@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   TextField,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
-} from "@mui/material";
+  Button,
+} from '@mui/material';
 
 export const SearchBar = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   const handleSearchChange = (event: any) => {
     setSearchQuery(event.target.value);
@@ -21,14 +22,15 @@ export const SearchBar = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    // Perform search or filtering based on searchQuery and selectedCategory
-    console.log("Search query:", searchQuery);
-    console.log("Selected category:", selectedCategory);
+    console.log('Search query:', searchQuery);
+    console.log('Selected category:', selectedCategory);
   };
 
   return (
     <form className="search" onSubmit={handleSubmit}>
       <TextField
+        sx={{ minWidth: 300, maxHeight: 40 }}
+        id="search"
         label="Search"
         value={searchQuery}
         onChange={handleSearchChange}
@@ -36,6 +38,7 @@ export const SearchBar = () => {
       <FormControl>
         <InputLabel id="category-label">Category</InputLabel>
         <Select
+          sx={{ minWidth: 60, maxHeight: 40 }}
           labelId="category-label"
           value={selectedCategory}
           onChange={handleCategoryChange}
@@ -43,10 +46,12 @@ export const SearchBar = () => {
           <MenuItem value="">All</MenuItem>
           <MenuItem value="category1">Category 1</MenuItem>
           <MenuItem value="category2">Category 2</MenuItem>
-          {/* Add more MenuItem components for additional categories */}
+          <MenuItem value="category3">Category 3</MenuItem>
         </Select>
       </FormControl>
-      <button type="submit">Search</button>
+      <Button variant="contained" color="primary" type="submit">
+        Search
+      </Button>
     </form>
   );
 };

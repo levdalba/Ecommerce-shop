@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Typography,
   Grid,
@@ -9,25 +9,28 @@ import {
   CardContent,
   CardActions,
   Button,
-} from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link } from "react-router-dom";
-import Carousel from "react-material-ui-carousel";
-import { makeStyles } from "@mui/styles";
-import { AddShoppingCart } from "@mui/icons-material";
-import { CustomCarousel } from "../components/Navbar/Carousel";
+  Box,
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link } from 'react-router-dom';
+import Carousel from 'react-material-ui-carousel';
+import { makeStyles } from '@mui/styles';
+import { AddShoppingCart } from '@mui/icons-material';
+import { CustomCarousel } from '../components/Navbar/Carousel';
+
 const theme = createTheme();
+
 const useStyles = makeStyles(() => ({
   card: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    minHeight: "100%",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    minHeight: '100%',
   },
   productsContainer: {
-    margin: "0 auto",
+    margin: '0 auto',
     maxWidth: 960,
-    padding: "0 16px",
+    padding: '0 16px',
   },
 }));
 
@@ -48,54 +51,59 @@ export const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
+    fetchProducts({ pageSize: 20, pageNumber: page });
+  }, [page]);
+  useEffect(() => {
     calculateCardHeight();
-    window.addEventListener("resize", calculateCardHeight);
+    window.addEventListener('resize', calculateCardHeight);
     return () => {
-      window.removeEventListener("resize", calculateCardHeight);
+      window.removeEventListener('resize', calculateCardHeight);
     };
   }, [products]);
 
   const handleAddToCart = (product: Product) => {
-  setCartItems([...cartItems, product]);
-  toast.success("Product added to cart!");
-};
-  
+    setCartItems([...cartItems, product]);
+    toast.success('Product added to cart!');
+  };
 
-  const fetchProducts = async () => {
+  const fetchProducts = async ({
+    pageSize,
+    pageNumber,
+  }: {
+    pageSize: number;
+    pageNumber: number;
+  }) => {
     try {
-      const response = await axios.post("http://localhost:8080/products", {
-        keyword: "laptop",
-        page_size: 12,
-        page_number: 55,
+      const response = await axios.post('http://localhost:8080/products', {
+        keyword: 'laptop',
+        page_size: pageSize,
+        page_number: pageNumber,
       });
       const data = response.data;
 
       if (Array.isArray(data)) {
-        setProducts(data);
-      } else if (data && typeof data === "object") {
+        setProducts([...products, ...data]);
+      } else if (data && typeof data === 'object') {
         const productsArray = data.products;
         if (Array.isArray(productsArray)) {
-          setProducts(productsArray);
+          setProducts([...products, ...productsArray]);
         } else {
-          console.error("Invalid response format: Products array not found");
+          console.error('Invalid response format: Products array not found');
         }
       } else {
-        console.error("Invalid response format: Expected an array or object");
+        console.error('Invalid response format: Expected an array or object');
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error('Error fetching products:', error);
     }
   };
-
   const truncateTitle = (title: string) => {
-    const words = title.split(" ");
+    const words = title.split(' ');
     if (words.length > 4) {
-      return words.slice(0, 4).join(" ") + "...";
+      return words.slice(0, 4).join(' ') + '...';
     }
     return title;
   };
@@ -108,6 +116,14 @@ export const Home = () => {
     }
   };
 
+  const handleFetchMore = () => {
+    const pageSize = 20;
+    const pageNumber = Math.ceil(products.length / pageSize) + 1;
+    console.log('pageSize:', pageSize);
+    console.log('pageNumber:', pageNumber);
+    fetchProducts({ pageSize, pageNumber });
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -115,7 +131,16 @@ export const Home = () => {
         <div className={classes.productsContainer}>
           <Grid container spacing={2} justifyContent="center">
             {products.map((product) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                padding={'10px'}
+                key={product.id}
+                bgcolor={'#f5f5f5'}
+              >
                 <Card className={classes.card} ref={cardRef}>
                   <CardActionArea
                     component={Link}
@@ -127,7 +152,7 @@ export const Home = () => {
                           src={image}
                           alt={`Product ${index}`}
                           key={index}
-                          style={{ objectFit: "cover", width: "100%" }}
+                          style={{ objectFit: 'cover', width: '100%' }}
                         />
                       ))}
                     </Carousel>
@@ -149,7 +174,7 @@ export const Home = () => {
                       color="primary"
                       startIcon={<AddShoppingCart />}
                       component={Link}
-                      onClick={() => handleAddToCart(product)} 
+                      onClick={() => handleAddToCart(product)}
                       to={`/`}
                       fullWidth
                     >
@@ -160,6 +185,11 @@ export const Home = () => {
               </Grid>
             ))}
           </Grid>
+          <Box textAlign="center">
+            <Button onClick={handleFetchMore} variant="outlined">
+              Show more{' '}
+            </Button>
+          </Box>
         </div>
       </div>
     </ThemeProvider>
@@ -167,4 +197,3 @@ export const Home = () => {
 };
 
 export default Home;
-
