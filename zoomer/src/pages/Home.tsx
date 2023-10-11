@@ -9,6 +9,7 @@ import {
   CardContent,
   CardActions,
   Button,
+  Box,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
@@ -37,7 +38,7 @@ interface Product {
   id: number;
   title: string;
   description: string;
-  images: string[]; // Make sure 'images' property is defined
+  images: string[];
   brand: string;
   category: string;
   price: number;
@@ -50,10 +51,11 @@ export const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const [page, setPage] = useState(1);
 
+  useEffect(() => {
+    fetchProducts({ pageSize: 20, pageNumber: page });
+  }, [page]);
   useEffect(() => {
     calculateCardHeight();
     window.addEventListener('resize', calculateCardHeight);
@@ -67,21 +69,27 @@ export const Home = () => {
     toast.success('Product added to cart!');
   };
 
-  const fetchProducts = async () => {
+  const fetchProducts = async ({
+    pageSize,
+    pageNumber,
+  }: {
+    pageSize: number;
+    pageNumber: number;
+  }) => {
     try {
       const response = await axios.post('http://localhost:8080/products', {
         keyword: 'laptop',
-        page_size: 12,
-        page_number: 55,
+        page_size: pageSize,
+        page_number: pageNumber,
       });
       const data = response.data;
 
       if (Array.isArray(data)) {
-        setProducts(data);
+        setProducts([...products, ...data]);
       } else if (data && typeof data === 'object') {
         const productsArray = data.products;
         if (Array.isArray(productsArray)) {
-          setProducts(productsArray);
+          setProducts([...products, ...productsArray]);
         } else {
           console.error('Invalid response format: Products array not found');
         }
@@ -92,7 +100,6 @@ export const Home = () => {
       console.error('Error fetching products:', error);
     }
   };
-
   const truncateTitle = (title: string) => {
     const words = title.split(' ');
     if (words.length > 4) {
@@ -109,6 +116,14 @@ export const Home = () => {
     }
   };
 
+  const handleFetchMore = () => {
+    const pageSize = 20;
+    const pageNumber = Math.ceil(products.length / pageSize) + 1;
+    console.log('pageSize:', pageSize);
+    console.log('pageNumber:', pageNumber);
+    fetchProducts({ pageSize, pageNumber });
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -116,7 +131,16 @@ export const Home = () => {
         <div className={classes.productsContainer}>
           <Grid container spacing={2} justifyContent="center">
             {products.map((product) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                padding={'10px'}
+                key={product.id}
+                bgcolor={'#f5f5f5'}
+              >
                 <Card className={classes.card} ref={cardRef}>
                   <CardActionArea
                     component={Link}
@@ -161,6 +185,11 @@ export const Home = () => {
               </Grid>
             ))}
           </Grid>
+          <Box textAlign="center">
+            <Button onClick={handleFetchMore} variant="outlined">
+              Show more{' '}
+            </Button>
+          </Box>
         </div>
       </div>
     </ThemeProvider>

@@ -12,7 +12,7 @@ import { CartProvider } from './components/Cart/Cartprovider';
 const theme = createTheme({
   palette: {
     background: {
-      paper: '#ffffff', // Replace with your desired background color
+      paper: '#ffffff',
     },
   },
 });
