@@ -6,7 +6,9 @@ import {
   FormControl,
   InputLabel,
   Button,
+  Box,
 } from '@mui/material';
+import { Height } from '@mui/icons-material';
 
 export const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,10 +18,6 @@ export const SearchBar = () => {
     setSearchQuery(event.target.value);
   };
 
-  const handleCategoryChange = (event: any) => {
-    setSelectedCategory(event.target.value);
-  };
-
   const handleSubmit = (event: any) => {
     event.preventDefault();
     console.log('Search query:', searchQuery);
@@ -27,31 +25,24 @@ export const SearchBar = () => {
   };
 
   return (
-    <form className="search" onSubmit={handleSubmit}>
-      <TextField
-        sx={{ minWidth: 300, maxHeight: 40 }}
-        id="search"
-        label="Search"
-        value={searchQuery}
-        onChange={handleSearchChange}
-      />
-      <FormControl>
-        <InputLabel id="category-label">Category</InputLabel>
-        <Select
-          sx={{ minWidth: 60, maxHeight: 40 }}
-          labelId="category-label"
-          value={selectedCategory}
-          onChange={handleCategoryChange}
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <form className="search" onSubmit={handleSubmit}>
+        <TextField
+          sx={{ minWidth: 300, height: 50 }}
+          id="search"
+          label="Search"
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+        <Button
+          sx={{ height: 55 }}
+          color="primary"
+          variant="outlined"
+          type="submit"
         >
-          <MenuItem value="">All</MenuItem>
-          <MenuItem value="category1">Category 1</MenuItem>
-          <MenuItem value="category2">Category 2</MenuItem>
-          <MenuItem value="category3">Category 3</MenuItem>
-        </Select>
-      </FormControl>
-      <Button variant="contained" color="primary" type="submit">
-        Search
-      </Button>
-    </form>
+          Search{' '}
+        </Button>
+      </form>
+    </Box>
   );
 };
