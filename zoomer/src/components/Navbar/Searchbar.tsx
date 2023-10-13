@@ -34,15 +34,20 @@ export const SearchBar = () => {
           value={searchQuery}
           onChange={handleSearchChange}
         />
-        <Button
-          sx={{ height: 55 }}
-          color="primary"
-          variant="outlined"
-          type="submit"
-        >
-          Search{' '}
-        </Button>
       </form>
+      <Button
+        sx={{
+          height: 55,
+          justifyContent: 'center',
+          marginLeft: 2,
+          marginTop: 3,
+        }}
+        color="primary"
+        variant="outlined"
+        type="submit"
+      >
+        Search{' '}
+      </Button>
     </Box>
   );
 };
