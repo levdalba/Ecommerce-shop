@@ -15,6 +15,20 @@ const CartPage = () => {
         setCartItems(updatedItems)
     }
 
+    const truncateTitle = (title: string) => {
+        if (title.length > 20) {
+            return title.substring(0, 20) + '...'
+        }
+        return title
+    }
+
+    const handleRemoveItem = (item: CartItem) => {
+        const updatedItems = cartItems.filter(
+            (cartItem) => cartItem.id !== item.id
+        )
+        setCartItems(updatedItems)
+    }
+
     return (
         <div>
             <Typography variant="h4" align="center" gutterBottom>
@@ -26,7 +40,7 @@ const CartPage = () => {
                 </Typography>
             ) : (
                 <Grid container spacing={3}>
-                    {cartItems.map((item: CartItem) => (
+                    {cartItems.map((item: CartItem, index: number) => (
                         <Grid item xs={12} sm={6} md={4} key={item.id}>
                             <div
                                 style={{
@@ -38,18 +52,21 @@ const CartPage = () => {
                                 }}
                                 onClick={() => handleItemClick(item)}
                             >
-                                <Typography
-                                    variant="h6"
-                                    key={`title-${item.id}`}
-                                >
-                                    {item.title}
+                                <img
+                                    src={item.images[0]} // Access images property on item object
+                                    alt={`Product ${index}`}
+                                    style={{
+                                        objectFit: 'cover',
+                                        width: '100%',
+                                    }}
+                                />
+                                <Typography variant="h6">
+                                    {truncateTitle(item.title)}
                                 </Typography>
-                                <Typography
-                                    variant="body1"
-                                    key={`price-${item.id}`}
-                                >
-                                    {`$${item.price}`}
-                                </Typography>
+                                <Typography variant="body1">{`$${item.price}`}</Typography>
+                                <button onClick={() => handleRemoveItem(item)}>
+                                    Remove
+                                </button>
                             </div>
                         </Grid>
                     ))}

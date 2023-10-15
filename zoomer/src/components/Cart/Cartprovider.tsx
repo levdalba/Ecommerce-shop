@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
-
 export interface CartItem {
+    images: any
     id: number
     title: string
     price: number

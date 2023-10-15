@@ -75,10 +75,8 @@ export const Home = () => {
             cartItems.push({ ...product, quantity: 1 })
         }
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
-        setCartItems([...cartItems, product])
         toast.success('Product added to cart!')
     }
-
     const fetchProducts = async ({
         pageSize,
         pageNumber,
