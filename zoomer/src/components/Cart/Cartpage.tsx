@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Typography, Grid } from '@mui/material'
+import { Typography, Grid, Button } from '@mui/material'
 import { CartContext, CartContextType, CartItem } from '../Cart/Cartprovider'
 
 const CartPage = () => {
@@ -39,35 +39,37 @@ const CartPage = () => {
                     Your cart is empty.
                 </Typography>
             ) : (
-                <Grid container spacing={3}>
+                <Grid item container xs={12} sm={6} md={4} lg={3} spacing={3}>
                     {cartItems.map((item: CartItem, index: number) => (
-                        <Grid item xs={12} sm={6} md={4} key={item.id}>
-                            <div
-                                style={{
-                                    border: item.active
-                                        ? '2px solid blue'
-                                        : '2px solid black',
+                        <Grid
+                            container
+                            gridTemplateRows={'50px'}
+                            item
+                            key={item.id}
+                        >
+                            <Typography
+                                variant="h6"
+                                sx={{
                                     padding: '10px',
-                                    cursor: 'grab', // Change cursor style here
+                                    cursor: 'grab',
                                 }}
                                 onClick={() => handleItemClick(item)}
                             >
                                 <img
-                                    src={item.images[0]} // Access images property on item object
+                                    src={item.images[0]}
                                     alt={`Product ${index}`}
                                     style={{
-                                        objectFit: 'cover',
-                                        width: '100%',
+                                        maxHeight: '100px',
                                     }}
                                 />
                                 <Typography variant="h6">
                                     {truncateTitle(item.title)}
                                 </Typography>
                                 <Typography variant="body1">{`$${item.price}`}</Typography>
-                                <button onClick={() => handleRemoveItem(item)}>
+                                <Button onClick={() => handleRemoveItem(item)}>
                                     Remove
-                                </button>
-                            </div>
+                                </Button>
+                            </Typography>
                         </Grid>
                     ))}
                 </Grid>
