@@ -17,7 +17,7 @@ import Carousel from 'react-material-ui-carousel'
 import { makeStyles } from '@mui/styles'
 import { AddShoppingCart } from '@mui/icons-material'
 import { CustomCarousel } from '../components/Navbar/Carousel'
-
+import ProductCarousel from '../components/ProductCard/ProductCarousel'
 const theme = createTheme()
 
 const useStyles = makeStyles(() => ({
@@ -161,21 +161,9 @@ export const Home = () => {
                                         component={Link}
                                         to={`/products/${product.id}`}
                                     >
-                                        <Carousel>
-                                            {product.images.map(
-                                                (image, index) => (
-                                                    <img
-                                                        src={image}
-                                                        alt={`Product ${index}`}
-                                                        key={index}
-                                                        style={{
-                                                            objectFit: 'cover',
-                                                            width: '100%',
-                                                        }}
-                                                    />
-                                                )
-                                            )}
-                                        </Carousel>
+                                        <ProductCarousel
+                                            images={product.images}
+                                        />
                                         <CardContent>
                                             <Typography variant="h6">
                                                 {truncateTitle(product.title)}
