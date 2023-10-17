@@ -50,7 +50,6 @@ export const Home = () => {
     const classes = useStyles()
     const [products, setProducts] = useState<Product[]>([])
     const cardRef = useRef<HTMLDivElement>(null)
-
     const [page, setPage] = useState(1)
 
     useEffect(() => {
@@ -75,6 +74,7 @@ export const Home = () => {
             cartItems.push({ ...product, quantity: 1 })
         }
         localStorage.setItem('cartItems', JSON.stringify(cartItems))
+        setCartItems(cartItems)
         toast.success('Product added to cart!')
     }
     const fetchProducts = async ({
