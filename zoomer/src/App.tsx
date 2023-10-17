@@ -8,7 +8,7 @@ import { Store } from './Store'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CartPage from './components/Cart/Cartpage'
 import ProductPage from './components/ProductCard/Productpage'
-import { CartProvider } from './components/Cart/Cartprovider'
+import { CartProvider } from './components/Cart/CartProvider'
 const theme = createTheme({
     palette: {
         background: {

@@ -1,9 +1,20 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Typography, Grid, Button } from '@mui/material'
-import { CartContext, CartContextType, CartItem } from './Cartprovider'
+import { CartContext, CartContextType, CartItem } from './CartProvider'
 
 const CartPage = () => {
     const { cartItems, setCartItems } = useContext<CartContextType>(CartContext)
+
+    useEffect(() => {
+        const storedCartItems = localStorage.getItem('cartItems')
+        if (storedCartItems) {
+            setCartItems(JSON.parse(storedCartItems))
+        }
+    }, [setCartItems])
+
+    useEffect(() => {
+        localStorage.setItem('cartItems', JSON.stringify(cartItems))
+    }, [cartItems])
 
     const handleItemClick = (item: CartItem) => {
         const updatedItems = cartItems.map((cartItem) => {

@@ -11,7 +11,7 @@ import {
 } from '@mui/material'
 import { ShoppingCart } from '@mui/icons-material'
 import { useHistory } from 'react-router-dom'
-import { CartContext, CartItem } from '../Cart/Cartprovider'
+import { CartContext, CartItem } from '../Cart/CartProvider'
 import CartPage from '../Cart/Cartpage'
 
 export const CartButton = ({ itemCount }: { itemCount: number }) => {
