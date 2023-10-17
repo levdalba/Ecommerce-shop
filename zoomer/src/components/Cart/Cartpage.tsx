@@ -10,6 +10,7 @@ const CartPage = () => {
             (cartItem) => cartItem.id !== itemId
         )
         setCartItems(updatedItems)
+        localStorage.setItem('cartItems', JSON.stringify(updatedItems))
     }
 
     const truncateTitle = (title: string) => {
