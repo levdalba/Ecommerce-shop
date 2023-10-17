@@ -1,28 +1,14 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Typography, Grid, Button } from '@mui/material'
-import { CartContext, CartContextType, CartItem } from './CartProvider'
+import { CartContext, CartContextType, CartItem } from '../Cart/CartProvider'
 
 const CartPage = () => {
     const { cartItems, setCartItems } = useContext<CartContextType>(CartContext)
 
-    useEffect(() => {
-        const storedCartItems = localStorage.getItem('cartItems')
-        if (storedCartItems) {
-            setCartItems(JSON.parse(storedCartItems))
-        }
-    }, [setCartItems])
-
-    useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems))
-    }, [cartItems])
-
-    const handleItemClick = (item: CartItem) => {
-        const updatedItems = cartItems.map((cartItem) => {
-            if (cartItem.id === item.id) {
-                return { ...cartItem, active: !cartItem.active }
-            }
-            return cartItem
-        })
+    const handleRemoveItem = (itemId: number) => {
+        const updatedItems = cartItems.filter(
+            (cartItem) => cartItem.id !== itemId
+        )
         setCartItems(updatedItems)
     }
 
@@ -31,13 +17,6 @@ const CartPage = () => {
             return title.substring(0, 20) + '...'
         }
         return title
-    }
-
-    const handleRemoveItem = (item: CartItem) => {
-        const updatedItems = cartItems.filter(
-            (cartItem) => cartItem.id !== item.id
-        )
-        setCartItems(updatedItems)
     }
 
     return (
@@ -64,7 +43,6 @@ const CartPage = () => {
                                     padding: '10px',
                                     cursor: 'grab',
                                 }}
-                                onClick={() => handleItemClick(item)}
                             >
                                 <img
                                     src={item.images[0]}
@@ -77,7 +55,9 @@ const CartPage = () => {
                                     {truncateTitle(item.title)}
                                 </Typography>
                                 <Typography variant="body1">{`$${item.price}`}</Typography>
-                                <Button onClick={() => handleRemoveItem(item)}>
+                                <Button
+                                    onClick={() => handleRemoveItem(item.id)}
+                                >
                                     Remove
                                 </Button>
                             </Typography>
