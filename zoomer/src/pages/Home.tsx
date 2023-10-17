@@ -178,7 +178,7 @@ export const Home = () => {
                                                 variant="subtitle1"
                                                 color="textSecondary"
                                             >
-                                                ${product.price}
+                                                ₾{product.price}
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
