@@ -35,8 +35,10 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     }, [])
 
     const addToCart = (item: CartItem) => {
-        const newCartItem = { ...item, id: Date.now() } // add unique id to new cart item
-        setCartItems([...cartItems, newCartItem])
+        const newCartItem = { ...item, id: Date.now() }
+        const updatedCart = [...cartItems, newCartItem]
+        setCartItems(updatedCart)
+        localStorage.setItem('cartItems', JSON.stringify(updatedCart)) // Update local storage
     }
 
     const contextValue: CartContextType = {
