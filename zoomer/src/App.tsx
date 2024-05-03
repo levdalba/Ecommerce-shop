@@ -4,10 +4,10 @@ import { Container } from '@mui/material';
 import { About } from './pages/About';
 import { Navbar } from './components/Navbar/Navbar';
 import { Home } from './pages/Home';
-import { Store } from './Store';
+import { Store } from './pages/Store';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CartPage from './components/Cart/Cartpage';
-import ProductPage from './components/ProductCard/Productpage';
+import ProductPage from './pages/Productpage';
 import { CartProvider } from './components/Cart/Cartprovider';
 const theme = createTheme({
   palette: {
