@@ -65,6 +65,16 @@ export const Home = () => {
   }, [products]);
 
   const handleAddToCart = (product: Product) => {
+    const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    const existingItem = cartItems.find(
+      (item: Product) => item.id === product.id
+    );
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cartItems.push({ ...product, quantity: 1 });
+    }
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
     setCartItems([...cartItems, product]);
     toast.success('Product added to cart!');
   };
@@ -152,7 +162,10 @@ export const Home = () => {
                           src={image}
                           alt={`Product ${index}`}
                           key={index}
-                          style={{ objectFit: 'cover', width: '100%' }}
+                          style={{
+                            objectFit: 'cover',
+                            width: '100%',
+                          }}
                         />
                       ))}
                     </Carousel>

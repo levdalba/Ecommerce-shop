@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Typography,
   Grid,
@@ -8,8 +8,8 @@ import {
   CardContent,
   CardActions,
   Button,
-} from "@mui/material";
-import { AddShoppingCart } from "@mui/icons-material";
+} from '@mui/material';
+import { AddShoppingCart } from '@mui/icons-material';
 
 interface ProductCardProps {
   id: number;
@@ -31,9 +31,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   price,
 }) => {
   const truncateTitle = (title: string) => {
-    const words = title.split(" ");
+    const words = title.split(' ');
     if (words.length > 4) {
-      return words.slice(0, 4).join(" ") + "...";
+      return words.slice(0, 4).join(' ') + '...';
     }
     return title;
   };
@@ -46,7 +46,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <img
               src={images[0]}
               alt={`Product ${id}`}
-              style={{ objectFit: "cover", width: "100%" }}
+              style={{ objectFit: 'cover', width: '100%' }}
             />
           )}
           <CardContent>
