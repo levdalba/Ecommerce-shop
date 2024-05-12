@@ -84,8 +84,18 @@ const ProductPage = () => {
     setShowDescription(!showDescription);
   };
 
-  const handleAddToCart = () => {
-    toast.success('Product added to cart!'); // Display success toast
+  const handleAddToCart = (product: Product) => {
+    const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    const existingItem = cartItems.find(
+      (item: Product) => item.id === product.id
+    );
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cartItems.push({ ...product, quantity: 1 });
+    }
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    toast.success('Product added to cart!');
   };
 
   return (
@@ -102,7 +112,7 @@ const ProductPage = () => {
           <Button
             variant="contained"
             startIcon={<AddShoppingCart />}
-            onClick={handleAddToCart}
+            onClick={() => handleAddToCart(product)}
           >
             Add to Cart
           </Button>
