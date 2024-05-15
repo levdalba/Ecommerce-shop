@@ -7,16 +7,16 @@ import {
 } from 'react-router-dom';
 import { Container } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Navbar } from './components/Navbar/Navbar'; // Corrected the import
+import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home';
-import { CartProvider } from './components/Cart/Cartprovider'; // Consistent import style
-import { Store } from './pages/Store';
-import { About } from './pages/About';
+import { CartProvider } from './components/Cart/Cartprovider';
+import Store from './pages/Store';
+import About from './pages/About';
 import CartPage from './components/Cart/Cartpage';
 import ProductPage from './pages/Productpage';
 import Login from './pages/Login';
-import Register from './pages/Register'; // Import Register component
-import ForgotPassword from './pages/ForgotPassword'; // Import Forgot Password component
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 import PrivateRoute from './components/common/PrivateRoute';
 import UserDashboard from './components/user/UserDashboard';
 import AdminDashboard from './components/admin/AdminDashboard';
@@ -42,8 +42,8 @@ export default function App() {
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />{' '}
-              <Route path="/forgot-password" component={ForgotPassword} />{' '}
+              <Route path="/register" component={Register} />
+              <Route path="/forgot-password" component={ForgotPassword} />
               <Route path="/store" component={Store} />
               <Route path="/about" component={About} />
               <Route path="/cart" component={CartPage} />

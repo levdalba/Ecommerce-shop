@@ -1,10 +1,10 @@
-import React from "react";
-import Logo from "./Logo";
-import "./Navbar.css";
-import { SearchBar } from "./Searchbar";
-import { Profile } from "./Profile";
-import { CartButton } from "./CartButton";
-export function Navbar() {
+import React from 'react';
+import Logo from './Logo';
+import './Navbar.css';
+import { SearchBar } from './Searchbar';
+import { Profile } from './Profile';
+import { CartButton } from './CartButton';
+function Navbar() {
   return (
     <>
       <div className="nav-wrapper">
@@ -16,3 +16,4 @@ export function Navbar() {
     </>
   );
 }
+export default Navbar;

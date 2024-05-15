@@ -1,55 +1,41 @@
-class AuthService {
-  login(email: string, password: string) {
-    return fetch('https://yourapi.com/login', {
-      // Use HTTPS for secure communication
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem('token', data.token); // Consider more secure storage options
-        }
-        return data;
-      })
-      .catch((error) => {
-        console.error('Login Failed:', error);
-        return { error: error.message };
-      });
-  }
+import axios from 'axios';
 
-  logout() {
-    localStorage.removeItem('token');
-  }
+const API_URL = 'http://localhost:8080';
 
-  isAuthenticated() {
-    const token = localStorage.getItem('token');
-    if (!token) return false;
-
-    // Optionally check if the token is expired
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const isExpired = Date.now() >= payload.exp * 1000;
-    if (isExpired) {
-      this.logout();
-      return false;
+const AuthService = {
+  login: async (email: string, password: string) => {
+    const response = await axios.post(`${API_URL}/login`, { email, password });
+    if (response.data.AccessToken) {
+      localStorage.setItem('user', JSON.stringify(response.data));
     }
+    return response.data;
+  },
 
-    return true;
-  }
+  logout: () => {
+    localStorage.removeItem('user');
+  },
 
-  getUserRole() {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
+  getCurrentUser: () => {
+    return JSON.parse(localStorage.getItem('user') || '{}');
+  },
 
-    const { role } = JSON.parse(atob(token.split('.')[1])); // Assuming JWT structure
-    return role;
-  }
-}
+  isAuthenticated: () => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    return !!user.token;
+  },
 
-export default new AuthService();
+  isAdmin: async () => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user && user.token) {
+      const response = await axios.get(`${API_URL}/user/me`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      return response.data.role === 'admin';
+    }
+    return false;
+  },
+};
+
+export default AuthService;

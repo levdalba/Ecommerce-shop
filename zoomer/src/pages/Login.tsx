@@ -22,8 +22,13 @@ const Login = () => {
     event.preventDefault();
     try {
       const data = await AuthService.login(email, password);
-      if (data.token) {
-        history.push('/dashboard');
+      if (data.AccessToken) {
+        const isAdmin = await AuthService.isAdmin();
+        if (isAdmin) {
+          history.push('/admin/dashboard');
+        } else {
+          history.push('/user/dashboard');
+        }
       } else {
         setError('Invalid login credentials.');
       }
