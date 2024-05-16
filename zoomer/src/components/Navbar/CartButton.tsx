@@ -37,14 +37,6 @@ export const CartButton = ({ itemCount }: { itemCount: number }) => {
             <ShoppingCart />
           </Badge>
         </IconButton>
-        <Typography
-          sx={{ marginLeft: '0.5rem', marginTop: '1rem' }}
-          variant="subtitle1"
-          color="inherit"
-          align="right"
-        >
-          0 ₾
-        </Typography>
       </div>
     </>
   );

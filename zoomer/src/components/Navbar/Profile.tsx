@@ -1,24 +1,27 @@
-import React from "react";
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  Avatar,
-  Typography,
-  Toolbar,
-  AppBar,
-} from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
+import React from 'react';
+import { IconButton, Typography, Menu, MenuItem } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
+import { useHistory } from 'react-router-dom';
 
-export const Profile = () => {
+interface ProfileProps {
+  handleLogout: () => void;
+}
+
+export const Profile: React.FC<ProfileProps> = ({ handleLogout }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const history = useHistory();
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleProfile = () => {
+    handleClose();
+    history.push('/profile');
   };
 
   return (
@@ -28,52 +31,28 @@ export const Profile = () => {
         aria-label="account of current user"
         aria-controls="profile-menu"
         aria-haspopup="true"
-        onClick={handleMenuOpen}
         color="inherit"
+        onClick={handleMenu}
       >
         <AccountCircle />
+        <Typography
+          variant="subtitle1"
+          color="inherit"
+          sx={{ marginLeft: '10px', display: { xs: 'none', sm: 'flex' } }}
+        >
+          Profile Info
+        </Typography>
       </IconButton>
-      <Typography
-        sx={{ padding: "0.2rem" }}
-        variant="subtitle1"
-        color="inherit"
-      >
-        Profile Info
-      </Typography>
       <Menu
         id="profile-menu"
         anchorEl={anchorEl}
+        keepMounted
         open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
+        onClose={handleClose}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+        <MenuItem onClick={handleProfile}>Profile</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );
 };
-
-const AdminPanel = () => {
-  return (
-    <div>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Admin Panel
-          </Typography>
-          <Profile />
-        </Toolbar>
-      </AppBar>
-      <Typography variant="h4" sx={{ marginTop: "2rem" }}>
-        Welcome to the Admin Panel
-      </Typography>
-      <Typography variant="body1" sx={{ marginTop: "1rem" }}>
-        Here you can manage the settings, users, and content of your
-        application.
-      </Typography>
-    </div>
-  );
-};
-
-export default AdminPanel;

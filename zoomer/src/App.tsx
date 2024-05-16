@@ -20,9 +20,9 @@ import ForgotPassword from './pages/ForgotPassword';
 import PrivateRoute from './components/common/PrivateRoute';
 import UserDashboard from './components/user/UserDashboard';
 import AdminDashboard from './components/admin/AdminDashboard';
-import UserProfile from './components/user/UserProfile';
 import UserSettings from './components/user/UserSettings';
 import AuthService from './services/AuthService';
+import ProfilePage from './pages/ProfilePage';
 
 const theme = createTheme({
   palette: {
@@ -49,12 +49,16 @@ const App: React.FC = () => {
               <Route path="/cart" component={CartPage} />
               <Route path="/products/:productId" component={ProductPage} />
               <PrivateRoute path="/user/dashboard" component={UserDashboard} />
-              <PrivateRoute path="/user/profile" component={UserProfile} />
               <PrivateRoute path="/user/settings" component={UserSettings} />
               <PrivateRoute
                 path="/admin/dashboard"
                 component={AdminDashboard}
                 adminOnly
+              />
+              <PrivateRoute
+                path="/profile"
+                component={ProfilePage}
+                adminOnly={false}
               />
               <Route path="*">
                 {AuthService.isAuthenticated() ? (

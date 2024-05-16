@@ -1,9 +1,4 @@
-import React, { useState } from 'react';
-import Logo from './Logo';
-import './Navbar.css';
-import { SearchBar } from './Searchbar';
-import { Profile } from './Profile';
-import { CartButton } from './CartButton';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Drawer,
@@ -11,12 +6,24 @@ import {
   List,
   ListItem,
   ListItemText,
+  Button,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import Logo from './Logo';
+import './Navbar.css';
+import { SearchBar } from './Searchbar';
+import { Profile } from './Profile';
+import { CartButton } from './CartButton';
+import AuthService from '../../services/AuthService';
 
 function Navbar() {
   const history = useHistory();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(AuthService.isAuthenticated());
+  }, []);
 
   const handleNavigation = (path: string) => {
     history.push(path);
@@ -27,25 +34,37 @@ function Navbar() {
     setDrawerOpen(open);
   };
 
+  const handleLogout = () => {
+    AuthService.logout();
+    setIsAuthenticated(false);
+    history.push('/login');
+    window.location.reload(); // To refresh the navbar state
+  };
+
   return (
     <div className="nav-wrapper">
       <Logo />
       <SearchBar />
       <div className="nav-buttons">
-        <Profile />
+        {isAuthenticated ? (
+          <Profile handleLogout={handleLogout} />
+        ) : (
+          <>
+            <Button
+              className="nav-button"
+              onClick={() => handleNavigation('/login')}
+            >
+              Login
+            </Button>
+            <Button
+              className="nav-button"
+              onClick={() => handleNavigation('/register')}
+            >
+              Register
+            </Button>
+          </>
+        )}
         <CartButton itemCount={0} />
-        <button
-          className="nav-button"
-          onClick={() => handleNavigation('/login')}
-        >
-          Login
-        </button>
-        <button
-          className="nav-button"
-          onClick={() => handleNavigation('/register')}
-        >
-          Register
-        </button>
       </div>
       <div className="burger-menu">
         <IconButton
@@ -62,12 +81,25 @@ function Navbar() {
           <ListItem button onClick={() => handleNavigation('/')}>
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem button onClick={() => handleNavigation('/login')}>
-            <ListItemText primary="Login" />
-          </ListItem>
-          <ListItem button onClick={() => handleNavigation('/register')}>
-            <ListItemText primary="Register" />
-          </ListItem>
+          {isAuthenticated ? (
+            <>
+              <ListItem button onClick={() => handleNavigation('/profile')}>
+                <ListItemText primary="Profile" />
+              </ListItem>
+              <ListItem button onClick={handleLogout}>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            </>
+          ) : (
+            <>
+              <ListItem button onClick={() => handleNavigation('/login')}>
+                <ListItemText primary="Login" />
+              </ListItem>
+              <ListItem button onClick={() => handleNavigation('/register')}>
+                <ListItemText primary="Register" />
+              </ListItem>
+            </>
+          )}
         </List>
       </Drawer>
     </div>
