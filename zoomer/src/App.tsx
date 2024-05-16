@@ -32,7 +32,7 @@ const theme = createTheme({
   },
 });
 
-export default function App() {
+const App: React.FC = () => {
   return (
     <CartProvider>
       <ThemeProvider theme={theme}>
@@ -48,25 +48,13 @@ export default function App() {
               <Route path="/about" component={About} />
               <Route path="/cart" component={CartPage} />
               <Route path="/products/:productId" component={ProductPage} />
-              <PrivateRoute
-                path="/user/dashboard"
-                component={UserDashboard}
-                roles={['user']}
-              />
-              <PrivateRoute
-                path="/user/profile"
-                component={UserProfile}
-                roles={['user']}
-              />
-              <PrivateRoute
-                path="/user/settings"
-                component={UserSettings}
-                roles={['user']}
-              />
+              <PrivateRoute path="/user/dashboard" component={UserDashboard} />
+              <PrivateRoute path="/user/profile" component={UserProfile} />
+              <PrivateRoute path="/user/settings" component={UserSettings} />
               <PrivateRoute
                 path="/admin/dashboard"
                 component={AdminDashboard}
-                roles={['admin']}
+                adminOnly
               />
               <Route path="*">
                 {AuthService.isAuthenticated() ? (
@@ -81,4 +69,6 @@ export default function App() {
       </ThemeProvider>
     </CartProvider>
   );
-}
+};
+
+export default App;

@@ -1,19 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React, { useEffect, useState, ComponentType } from 'react';
+import { Route, Redirect, RouteProps } from 'react-router-dom';
 import AuthService from '../../services/AuthService';
 
-const PrivateRoute = ({ component: Component, adminOnly, ...rest }: any) => {
+interface PrivateRouteProps extends RouteProps {
+  component: ComponentType<any>;
+  adminOnly?: boolean;
+}
+
+const PrivateRoute: React.FC<PrivateRouteProps> = ({
+  component: Component,
+  adminOnly = false,
+  ...rest
+}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const checkAuthentication = () => {
       const userAuthenticated = AuthService.isAuthenticated();
       setIsAuthenticated(userAuthenticated);
 
       if (userAuthenticated) {
-        const adminStatus = await AuthService.isAdmin();
+        const adminStatus = AuthService.isAdmin();
         setIsAdmin(adminStatus);
       }
 
