@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import {
   Drawer,
   IconButton,
@@ -23,6 +23,16 @@ function Navbar() {
 
   useEffect(() => {
     setIsAuthenticated(AuthService.isAuthenticated());
+
+    const handleStorageChange = () => {
+      setIsAuthenticated(AuthService.isAuthenticated());
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   const handleNavigation = (path: string) => {
@@ -37,8 +47,7 @@ function Navbar() {
   const handleLogout = () => {
     AuthService.logout();
     setIsAuthenticated(false);
-    history.push('/login');
-    window.location.reload(); // To refresh the navbar state
+    history.replace('/login'); // To refresh the navbar state
   };
 
   return (

@@ -19,7 +19,6 @@ import { AddShoppingCart } from '@mui/icons-material';
 import { CustomCarousel } from '../components/Navbar/Carousel';
 
 const theme = createTheme();
-
 const useStyles = makeStyles(() => ({
   card: {
     display: 'flex',

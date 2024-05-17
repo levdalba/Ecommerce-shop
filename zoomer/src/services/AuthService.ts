@@ -15,6 +15,7 @@ const AuthService = {
 
     if (response.data.AccessToken) {
       localStorage.setItem('user', JSON.stringify(response.data));
+      window.dispatchEvent(new Event('storage')); // Trigger state change to update UI
     }
     return response.data;
   },
@@ -26,6 +27,7 @@ const AuthService = {
 
   logout: () => {
     localStorage.removeItem('user');
+    window.dispatchEvent(new Event('storage')); // Trigger state change to update UI
   },
 
   getCurrentUser: () => {

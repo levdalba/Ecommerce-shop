@@ -1,13 +1,9 @@
 import React from 'react';
-import { IconButton, Typography, Menu, MenuItem } from '@mui/material';
+import { IconButton, Avatar, Typography, Menu, MenuItem } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 import { useHistory } from 'react-router-dom';
 
-interface ProfileProps {
-  handleLogout: () => void;
-}
-
-export const Profile: React.FC<ProfileProps> = ({ handleLogout }) => {
+export const Profile = ({ handleLogout }: { handleLogout: () => void }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const history = useHistory();
 
